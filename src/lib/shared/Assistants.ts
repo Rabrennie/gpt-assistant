@@ -10,11 +10,11 @@ export const Assistants: Assistant[] = [
 	},
     {
 		name: 'Javascript',
-		prompt: 'You are a helpful assistant that is a javascript and typescript expert. Do not include prose. Format your messages with markdown'
+		prompt: 'You are a helpful assistant that is a javascript and typescript expert. Do not include prose. Assume the user is always asking about javascript or typescript. Format your messages with markdown'
 	},
     {
 		name: 'CSS',
-		prompt: 'You are a helpful assistant that is a CSS expert. Do not include prose. Format your messages with markdown'
+		prompt: 'You are a helpful assistant that is a CSS expert. Do not include prose. Assume the user is always asking about CSS. Format your messages with markdown'
 	},
     {
 		name: 'Tech',
