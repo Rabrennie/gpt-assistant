@@ -1,4 +1,4 @@
-import type { Actions } from './$types';
+import type { Actions, PageServerLoad } from './$types';
 import { env } from '$env/dynamic/private';
 import { LLMChain } from 'langchain';
 import { ChatOpenAI } from 'langchain/chat_models';
@@ -7,22 +7,25 @@ import {
 	HumanMessagePromptTemplate,
 	SystemMessagePromptTemplate
 } from 'langchain/prompts';
-import { Assistants } from '$lib/shared/Assistants';
+import { PrismaClient } from '@prisma/client';
 
 export const actions = {
 	chat: async ({ request }) => {
 		const data = await request.formData();
 		const message = data.get('message');
-		const assistantChoice = data.get('assistant');
+		const promptChoice = data.get('prompt');
 
 		const model = new ChatOpenAI({ openAIApiKey: env.OPENAI_API_KEY, temperature: 0 });
 
-        const assistant = Assistants.find(a => a.name === assistantChoice);
+		let promptText = 'You are a helpful assistant';
+		if (promptChoice && !isNaN(Number(promptChoice))) {
+			const prisma = new PrismaClient();
+			const prompt = await prisma.prompt.findUnique({ where: { id: Number(promptChoice) } });
+			promptText = prompt?.prompt ?? 'You are a helpful assistant';
+		}
 
 		const chatPrompt = ChatPromptTemplate.fromPromptMessages([
-			SystemMessagePromptTemplate.fromTemplate(
-				assistant?.prompt ?? 'You are a helpful assistant'
-			),
+			SystemMessagePromptTemplate.fromTemplate(promptText),
 			HumanMessagePromptTemplate.fromTemplate('{text}')
 		]);
 
@@ -35,8 +38,18 @@ export const actions = {
 			text: message
 		});
 
-        console.log(res);
+		console.log(res);
 
 		return { success: true, message: res['text'] };
 	}
 } satisfies Actions;
+
+export const load = (async () => {
+	const prisma = new PrismaClient();
+
+	const prompts = await prisma.prompt.findMany();
+
+	return {
+		prompts
+	};
+}) satisfies PageServerLoad;

@@ -1,12 +1,12 @@
 <script lang="ts">
-	import type { ActionData } from './$types';
+	import type { ActionData, PageData } from './$types';
 	import { enhance } from '$app/forms';
 	import Spinner from '$lib/components/Spinner.svelte';
 	import Message from '$lib/components/Message.svelte';
 	import MessageContainer from '$lib/components/MessageContainer.svelte';
-	import { Assistants } from '$lib/shared/Assistants';
 
 	export let form: ActionData;
+	export let data: PageData;
 
 	let loading = false;
 </script>
@@ -27,9 +27,9 @@
 		>
 			<div class="flex gap-4">
 				<div class="flex flex-1 flex-col gap-3">
-					<select name="assistant" id="assistant" class="border p-3 rounded text-sm">
-						{#each Assistants as assistant}
-							<option value={assistant.name}>{assistant.name}</option>
+					<select name="prompt" id="prompt" class="border p-3 rounded text-sm">
+						{#each data.prompts as prompt}
+							<option value={prompt.id}>{prompt.name}</option>
 						{/each}
 					</select>
 					<textarea
