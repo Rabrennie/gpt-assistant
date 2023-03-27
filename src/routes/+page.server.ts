@@ -38,8 +38,6 @@ export const actions = {
 			text: message
 		});
 
-		console.log(res);
-
 		return { success: true, message: res['text'] };
 	}
 } satisfies Actions;

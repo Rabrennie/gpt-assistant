@@ -23,7 +23,5 @@ export const actions = {
 		});
 
 		throw redirect(303, '/prompts');
-
-        return {};
 	}
 } satisfies Actions;
