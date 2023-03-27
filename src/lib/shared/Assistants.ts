@@ -6,7 +6,7 @@ interface Assistant {
 export const Assistants: Assistant[] = [
 	{
 		name: 'Ruby',
-		prompt: 'You are a helpful assistant that is a ruby and rails expert. Do not include prose. Format your messages with markdown'
+		prompt: 'You are a helpful assistant that is a ruby and rails expert. Do not include prose. Assume the user is always asking about ruby or rails. Format your messages with markdown'
 	},
     {
 		name: 'Javascript',
